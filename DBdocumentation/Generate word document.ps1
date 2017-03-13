@@ -39,19 +39,12 @@ function CreateColumnsTable
     $columnsTable.Range.Font.Name = "Times New Roman" ;
 
     ## Header
-    $columnsTable.cell(1,1).range.Bold=1
     $columnsTable.cell(1,1).range.text = "Name";
-    $columnsTable.cell(1,2).range.Bold=1;
     $columnsTable.cell(1,2).range.text = "Data Type";
-    $columnsTable.cell(1,3).range.Bold=1;
     $columnsTable.cell(1,3).range.text = "Max Length (Bytes)";
-    $columnsTable.cell(1,4).range.Bold=1;
     $columnsTable.cell(1,4).range.text = "Allow Nulls";
-    $columnsTable.cell(1,5).range.Bold=1;
     $columnsTable.cell(1,5).range.text = "Identity";
-    $columnsTable.cell(1,6).range.Bold=1;
     $columnsTable.cell(1,6).range.text = "Default";
-    $columnsTable.cell(1,7).range.Bold=1;
     $columnsTable.cell(1,7).range.text = "Descripcion";
     
     $i=2;
@@ -60,23 +53,12 @@ function CreateColumnsTable
     { 
         $description = getDescriptionExtendedProperty $column; 
 
-        $columnsTable.Style = "List Table 3 - Accent 3";
-        $columnsTable.Range.Font.Size = 10;
-        $columnsTable.Range.Font.Name = "Times New Roman" ;
-
-        $columnsTable.cell($i,1).range.Bold = 0;
         $columnsTable.cell($i,1).range.text = $column.Name;
-        $columnsTable.cell($i,2).range.Bold = 0;
         $columnsTable.cell($i,2).range.text = $column.DataType.Name;
-        $columnsTable.cell($i,3).range.Bold = 0;
         $columnsTable.cell($i,3).range.text = $column.DataType.MaximumLength;
-        $columnsTable.cell($i,4).range.Bold = 0;
         $columnsTable.cell($i,4).range.text = $column.Nullable;
-        $columnsTable.cell($i,5).range.Bold = 0;
         $columnsTable.cell($i,5).range.text = $column.Identity;
-        $columnsTable.cell($i,6).range.Bold = 0;
         $columnsTable.cell($i,6).range.text = $column.Default;
-        $columnsTable.cell($i,7).range.Bold = 0;
         $columnsTable.cell($i,7).range.text = $description;
           
         $i++;
@@ -113,9 +95,7 @@ function CreateFkTable
         $fkTable.Range.Font.Name = "Times New Roman" ;
 
         ## Header
-        $fkTable.cell(1,1).range.Bold=1
         $fkTable.cell(1,1).range.text = "Name";
-        $fkTable.cell(1,2).range.Bold=1;
         $fkTable.cell(1,2).range.text = "Columns";
 
     
@@ -141,12 +121,8 @@ function CreateFkTable
                 $fkColumns += $column.Name + " -> [" + $referencedTableSchema + "].[" + $referencedTable + "].[" + $column.ReferencedColumn + "]";   
                       
             }
-            $fkTable.Style = "List Table 3 - Accent 3";
-            $fkTable.Range.Font.Size = 10;
-            $fkTable.Range.Font.Name = "Times New Roman" ;
-            $fkTable.cell($i,1).range.Bold = 0;
+
             $fkTable.cell($i,1).range.text = $fkName;
-            $fkTable.cell($i,2).range.Bold = 0;
             $fkTable.cell($i,2).range.text = $fkColumns;
 
             $i++;
@@ -184,27 +160,16 @@ function CreatePkIndexTable
         $indexesTable.Range.Font.Name = "Times New Roman" ;
 
         ## Header
-        $indexesTable.cell(1,1).range.Bold=1
         $indexesTable.cell(1,1).range.text = "Key";
-        $indexesTable.cell(1,2).range.Bold=1
         $indexesTable.cell(1,2).range.text = "Name";
-        $indexesTable.cell(1,3).range.Bold=1;
         $indexesTable.cell(1,3).range.text = "Key Columns";
-        $indexesTable.cell(1,4).range.Bold=1;
         $indexesTable.cell(1,4).range.text = "Unique";
-        $indexesTable.cell(1,5).range.Bold=1;
         $indexesTable.cell(1,5).range.text = "Is Clustered";
-        $indexesTable.cell(1,6).range.Bold=1;
         $indexesTable.cell(1,6).range.text = "Fill Factor";
 
         $i=2;
 
-        #Foreach($index in $table.Indexes | Where-Object { $_.IndexKeyType -ne "DriPrimaryKey" }){
         Foreach($index in $table.Indexes){
-            $indexesTable.Style = "List Table 3 - Accent 3";
-            $indexesTable.Range.Font.Size = 10;
-            $indexesTable.Range.Font.Name = "Times New Roman" ;
-
             If($index.IndexKeyType -eq "DriPrimaryKey"){
                 $indexesTable.cell($i,1).range.Bold = 0;
                 $indexesTable.cell($i,1).range.text = "Pk";
@@ -213,15 +178,11 @@ function CreatePkIndexTable
                 $indexesTable.cell($i,1).range.Bold = 0;
                 $indexesTable.cell($i,1).range.text = "";
             }
-            $indexesTable.cell($i,2).range.Bold = 0;
+
             $indexesTable.cell($i,2).range.text = $index.Name;
-            $indexesTable.cell($i,3).range.Bold = 0;
             $indexesTable.cell($i,3).range.text = ($index.IndexedColumns | select -ExpandProperty Name) -join " ,";
-            $indexesTable.cell($i,4).range.Bold = 0;
             $indexesTable.cell($i,4).range.text = $index.IsUnique;
-            $indexesTable.cell($i,5).range.Bold = 0;
             $indexesTable.cell($i,5).range.text = $index.IsClustered;
-            $indexesTable.cell($i,6).range.Bold = 0;
             $indexesTable.cell($i,6).range.text = $index.FillFactor;
 
             $i++;
@@ -268,6 +229,43 @@ $document = $word.Documents.Add("C:\Users\leandro.gomez\documents\Custom Office 
 
 $selection = $word.Selection;
 
+$selection.Style = 'Normal';
+$selection.TypeParagraph();
+$selection.Style = 'Title';
+$selection.Font.Bold = 1;
+$selection.TypeText("TimeTrade Database Structure");
+$selection.TypeParagraph();
+$selection.TypeParagraph();
+$selection.Style = 'Subtitle';
+$selection.Font.Bold = 0;
+$selection.TypeText("Distribution: Product Development, Product Management");
+$selection.TypeParagraph();
+$selection.Style = 'Subtitle';
+$selection.Font.Bold = 0;
+$selection.TypeText("Editor: Generated automatically from existing database.");
+$selection.TypeParagraph();
+$selection.Style = 'Subtitle';
+$selection.Font.Bold = 0;
+$date = Get-Date -format D;
+$selection.TypeText("Last Update: $date");
+$selection.TypeParagraph();
+$selection.Style = 'Normal';
+$selection.Font.Bold = 0;
+$selection.TypeParagraph();
+$selection.InsertBreak();
+
+$selection.Style = 'Normal';
+$selection.Font.Bold = 1;
+$selection.Font.Size = 12;
+$selection.TypeText("Table of Contents");
+$selection.TypeParagraph();
+
+$range = $selection.Range
+$toc = $document.TablesOfContents.Add($range)
+$selection.TypeParagraph()
+$selection.InsertBreak();
+
+
 $selection.Style = 'Heading 1';
 $selection.TypeText("Data tables");
 $selection.TypeParagraph();
@@ -301,6 +299,7 @@ Foreach ($table in $tables)
 
 }
 
+$toc.Update();
 
 $document.SaveAs([ref]$savePath,[ref]$SaveFormat::wdFormatdocument);
 $document.Close();
